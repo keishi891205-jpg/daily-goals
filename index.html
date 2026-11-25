@@ -1,0 +1,241 @@
+<!-- File: index.html -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="生活記録">
+  <meta name="description" content="起床と10分前集合を記録する個人用アプリ">
+  <title>生活記録</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="./icon-192.png">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <main class="app">
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">毎日の小さな目標</p>
+        <h1>生活記録</h1>
+      </div>
+      <button id="helpButton" type="button" class="secondary">
+        設定・ヘルプ
+      </button>
+    </header>
+
+    <p id="offlineStatus" class="connection" role="status">
+      オフライン対応を確認しています
+    </p>
+
+    <p id="updateNotice" class="notice" hidden>
+      更新を準備しました。このサイトのタブとホーム画面版をすべて閉じ、
+      開き直すと更新が適用されます。
+    </p>
+
+    <div class="storage-warning notice error" role="alert" hidden></div>
+
+    <section class="month-navigation" aria-label="表示月の操作">
+      <button id="previousMonth" type="button" aria-label="前月へ">‹</button>
+      <div class="month-center">
+        <h2 id="monthTitle"></h2>
+        <button id="currentMonth" type="button" class="text-button">
+          今月に戻る
+        </button>
+      </div>
+      <button id="nextMonth" type="button" aria-label="翌月へ">›</button>
+    </section>
+
+    <section class="summary" aria-label="表示月の達成率">
+      <article class="summary-card">
+        <h3>起床</h3>
+        <p id="wakeRate" class="rate">未集計</p>
+        <p id="wakeCount" class="muted">0日／0日</p>
+      </article>
+      <article class="summary-card">
+        <h3>10分前集合</h3>
+        <p id="meetingRate" class="rate">未集計</p>
+        <p id="meetingCount" class="muted">0回／0回</p>
+      </article>
+    </section>
+
+    <p class="summary-caption">達成数／記録数。未入力・集合なしは集計対象外。</p>
+
+    <section class="calendar-card" aria-labelledby="monthTitle">
+      <div class="weekdays" aria-hidden="true">
+        <span>月</span>
+        <span>火</span>
+        <span>水</span>
+        <span>木</span>
+        <span>金</span>
+        <span>土</span>
+        <span>日</span>
+      </div>
+      <div id="calendar" class="calendar" aria-label="月間カレンダー"></div>
+    </section>
+
+    <p class="legend">
+      <span class="ok-text">◯ 達成</span>
+      <span class="ng-text">× 未達成</span>
+      <span>・未入力</span>
+      <span>― 集合なし</span>
+    </p>
+
+    <p id="mainMessage" class="message" role="status" aria-live="polite"></p>
+
+    <div class="bottom-action">
+      <button id="todayButton" type="button" class="primary">
+        今日を記録
+      </button>
+    </div>
+
+    <noscript>
+      <p class="notice error">
+        このアプリにはJavaScriptが必要です。ブラウザで有効にしてください。
+      </p>
+    </noscript>
+  </main>
+
+  <dialog id="entryDialog" class="sheet" aria-labelledby="entryTitle">
+    <header class="sheet-header">
+      <h2 id="entryTitle"></h2>
+      <button type="button" data-close="entryDialog">閉じる</button>
+    </header>
+
+    <div class="sheet-body">
+      <div class="storage-warning notice error" role="alert" hidden></div>
+      <p id="entryRestriction" class="notice" hidden></p>
+
+      <fieldset id="entryFields" class="record-fields">
+        <legend class="sr-only">この日の記録</legend>
+
+        <section class="record-section">
+          <h3>起床</h3>
+          <p class="muted">寝てから9時間以内にベッドから出る</p>
+
+          <div class="button-row">
+            <button type="button" data-wake="ok" class="choice ok-choice">
+              ◯ 達成
+            </button>
+            <button type="button" data-wake="ng" class="choice ng-choice">
+              × 未達成
+            </button>
+          </div>
+
+          <button type="button" data-wake="unset" class="text-button">
+            未入力に戻す
+          </button>
+
+          <p class="small muted">
+            ベッドから出た日に記録します。時刻の入力や自動判定はありません。
+          </p>
+        </section>
+
+        <section class="record-section">
+          <h3>10分前集合</h3>
+          <p class="muted">集合時刻の10分前までに到着する</p>
+          <p id="meetingState" class="state-label"></p>
+
+          <div class="button-row">
+            <button id="addMeetingOk" type="button" class="ok-choice">
+              ◯を追加
+            </button>
+            <button id="addMeetingNg" type="button" class="ng-choice">
+              ×を追加
+            </button>
+          </div>
+
+          <ol id="meetingList" class="meeting-list"></ol>
+
+          <div class="button-row wrap">
+            <button id="noMeetings" type="button" class="secondary">
+              集合なし
+            </button>
+            <button id="clearMeetings" type="button" class="text-button">
+              未入力に戻す
+            </button>
+          </div>
+        </section>
+      </fieldset>
+
+      <p id="entryMessage" class="message" role="status" aria-live="polite"></p>
+    </div>
+  </dialog>
+
+  <dialog id="helpDialog" class="sheet" aria-labelledby="helpTitle">
+    <header class="sheet-header">
+      <h2 id="helpTitle">設定・ヘルプ</h2>
+      <button type="button" data-close="helpDialog">閉じる</button>
+    </header>
+
+    <div class="sheet-body">
+      <div class="storage-warning notice error" role="alert" hidden></div>
+
+      <section class="help-section">
+        <h3>バックアップ</h3>
+        <p>
+          記録をJSONファイルとして保存・復元できます。
+          読み込みは追加ではなく、全記録の置き換えです。
+        </p>
+        <div class="stack">
+          <button id="exportButton" type="button" class="secondary">
+            全記録を書き出す
+          </button>
+          <button id="importButton" type="button" class="secondary">
+            バックアップを読み込む
+          </button>
+        </div>
+        <input id="importFile" type="file" accept=".json,application/json" hidden>
+        <p class="small muted">
+          読み込み可能なファイルは10MBまでです。
+          置き換え前に、現在の記録を書き出しておくことをおすすめします。
+        </p>
+      </section>
+
+      <p id="helpMessage" class="message" role="status" aria-live="polite"></p>
+
+      <section class="help-section">
+        <h3>記録忘れの通知</h3>
+        <p>
+          iPhoneの「リマインダー」で「生活記録をつける」という項目を作り、
+          希望する時刻と「毎日」の繰り返しを設定してください。
+        </p>
+        <p>
+          リマインダーはこのアプリの記録状態と連動しません。
+          記録済みの日も通知されます。
+        </p>
+      </section>
+
+      <section class="help-section">
+        <h3>保存について</h3>
+        <ul>
+          <li>記録はこの端末・この利用環境内に保存されます。</li>
+          <li>記録データを外部へ送信する処理はありません。</li>
+          <li>サイトデータの削除や端末の故障などで失われる可能性があります。</li>
+          <li>定期的にバックアップしてください。</li>
+          <li>日常の利用はホーム画面のアイコンから行うことをおすすめします。</li>
+          <li>Safariとホーム画面版の保存領域が共有されるとは保証しません。</li>
+          <li>オフライン用のキャッシュも、OSなどに削除される場合があります。</li>
+        </ul>
+      </section>
+
+      <section class="help-section">
+        <h3>達成率について</h3>
+        <p>
+          起床は日数、集合は回数で集計します。
+          未入力と「集合なし」は分母に含めません。
+          集合の予定総数を入力しないため、一部の記録漏れは自動検出できません。
+        </p>
+      </section>
+
+      <button id="reloadButton" type="button" class="secondary">
+        画面を再読み込み
+      </button>
+    </div>
+  </dialog>
+</body>
+</html>

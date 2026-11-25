@@ -1,0 +1,554 @@
+/* File: styles.css */
+:root {
+  color-scheme: light;
+  --background: #f7f8fa;
+  --surface: #ffffff;
+  --text: #202a35;
+  --muted: #66717d;
+  --border: #dce2e7;
+  --green: #25694b;
+  --green-light: #edf6ef;
+  --red: #a43f43;
+  --red-light: #fff0f0;
+  --accent: #284f43;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html {
+  background: var(--background);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  min-height: 44px;
+  padding: 9px 13px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid #527cb8;
+  outline-offset: 3px;
+}
+
+button:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 0;
+  font-size: 25px;
+}
+
+h2 {
+  margin-bottom: 0;
+  font-size: 20px;
+}
+
+h3 {
+  margin-bottom: 8px;
+  font-size: 17px;
+}
+
+p {
+  margin-bottom: 12px;
+}
+
+.app {
+  width: min(100%, 600px);
+  margin: 0 auto;
+  padding:
+    calc(18px + env(safe-area-inset-top))
+    max(12px, env(safe-area-inset-right))
+    calc(20px + env(safe-area-inset-bottom))
+    max(12px, env(safe-area-inset-left));
+}
+
+.app-header,
+.sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.app-header {
+  margin-bottom: 10px;
+}
+
+.app-header > div {
+  min-width: 0;
+}
+
+.app-header button {
+  flex-shrink: 0;
+  font-size: 13px;
+}
+
+.eyebrow {
+  margin-bottom: 1px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.connection,
+.summary-caption,
+.legend,
+.small {
+  font-size: 12px;
+}
+
+.connection {
+  color: var(--muted);
+}
+
+.month-navigation {
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0 14px;
+}
+
+.month-navigation > button {
+  padding: 0;
+  font-size: 28px;
+}
+
+.month-center {
+  text-align: center;
+}
+
+.month-center .text-button {
+  padding: 3px 8px;
+  font-size: 12px;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.summary-card {
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.summary-card h3 {
+  margin-bottom: 3px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.rate {
+  margin-bottom: 2px;
+  font-size: 27px;
+  font-weight: 700;
+}
+
+.summary-card .muted {
+  margin-bottom: 0;
+  font-size: 12px;
+}
+
+.summary-caption {
+  margin: 8px 0 16px;
+  color: var(--muted);
+}
+
+.calendar-card {
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.weekdays,
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 2px;
+}
+
+.weekdays {
+  margin-bottom: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
+}
+
+.day,
+.empty-day {
+  min-width: 0;
+  min-height: 86px;
+}
+
+.day {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 3px;
+  width: 100%;
+  padding: 5px 1px;
+  border-color: transparent;
+  border-radius: 8px;
+  overflow: hidden;
+  text-align: left;
+}
+
+.day.today {
+  box-shadow: inset 0 0 0 2px var(--accent);
+  background: #f5f9f6;
+}
+
+.day-number {
+  padding-left: 3px;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.calendar-line {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.mini-label {
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: 9px;
+}
+
+.marks {
+  display: flex;
+  min-width: 0;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: -0.7px;
+}
+
+.extra-count {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 9px;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ok-text {
+  color: var(--green);
+}
+
+.ng-text {
+  color: var(--red);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin: 12px 2px;
+  color: var(--muted);
+}
+
+.bottom-action {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  margin-top: 8px;
+  padding: 10px 0 calc(8px + env(safe-area-inset-bottom));
+  background: var(--background);
+}
+
+.primary {
+  width: 100%;
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #ffffff;
+  font-weight: 650;
+}
+
+.secondary {
+  background: var(--surface);
+}
+
+.text-button {
+  border-color: transparent;
+  background: transparent;
+  color: var(--muted);
+}
+
+.ok-choice {
+  color: var(--green);
+}
+
+.ng-choice {
+  color: var(--red);
+}
+
+.ok-choice[aria-pressed="true"] {
+  border-color: var(--green);
+  background: var(--green-light);
+  box-shadow: inset 0 0 0 1px var(--green);
+}
+
+.ng-choice[aria-pressed="true"] {
+  border-color: var(--red);
+  background: var(--red-light);
+  box-shadow: inset 0 0 0 1px var(--red);
+}
+
+#noMeetings[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: #edf2f0;
+}
+
+.notice {
+  padding: 12px;
+  border-radius: 10px;
+  background: #eef2f6;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.error {
+  color: #8f3036;
+  background: #fff0f0;
+}
+
+.message {
+  min-height: 24px;
+  margin: 10px 0 0;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.message.error {
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.sheet {
+  width: min(100%, 580px);
+  max-width: 100%;
+  max-height: 90vh;
+  max-height: 90dvh;
+  margin: auto auto 0;
+  padding: 0;
+  border: 0;
+  border-radius: 22px 22px 0 0;
+  background: var(--surface);
+  color: var(--text);
+  overflow: hidden;
+}
+
+.sheet[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.sheet::backdrop {
+  background: rgb(20 30 40 / 40%);
+}
+
+.sheet-header {
+  flex-shrink: 0;
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sheet-header h2 {
+  font-size: 18px;
+}
+
+.sheet-header button {
+  flex-shrink: 0;
+  font-size: 13px;
+}
+
+.sheet-body {
+  min-height: 0;
+  padding:
+    16px
+    max(16px, env(safe-area-inset-right))
+    calc(24px + env(safe-area-inset-bottom))
+    max(16px, env(safe-area-inset-left));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.record-fields {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.record-section + .record-section,
+.help-section + .help-section {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.record-section > .muted {
+  font-size: 13px;
+}
+
+.button-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.button-row > button {
+  flex: 1;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+.state-label {
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.meeting-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 14px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.meeting-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 12px;
+  background: #f7f8fa;
+}
+
+.meeting-label {
+  min-width: 0;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.meeting-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 6px;
+}
+
+.meeting-actions button {
+  min-width: 44px;
+  padding: 7px 8px;
+}
+
+.meeting-actions .delete-button {
+  font-size: 12px;
+}
+
+.help-section {
+  font-size: 14px;
+}
+
+.help-section ul {
+  padding-left: 22px;
+}
+
+.help-section li {
+  margin-bottom: 8px;
+}
+
+.stack {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+@media (min-width: 600px) {
+  .day,
+  .empty-day {
+    min-height: 100px;
+  }
+
+  .day {
+    padding: 7px 5px;
+  }
+
+  .mini-label {
+    font-size: 11px;
+  }
+
+  .marks {
+    font-size: 14px;
+    letter-spacing: 0;
+  }
+
+  .sheet {
+    margin-bottom: 20px;
+    border-radius: 22px;
+  }
+}
